@@ -1,0 +1,8 @@
+{
+	"name": "brucep/wp-plugin-maintenance-mode",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
