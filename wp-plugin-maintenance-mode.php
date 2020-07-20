@@ -10,8 +10,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-add_action('template_redirect', function () {
-    if (!defined('BPWP_MAINTENANCE') || !BPWP_MAINTENANCE || current_user_can('activate_plugins')) {
+$maintenanceMode = defined('BPWP_MAINTENANCE') && BPWP_MAINTENANCE;
+
+add_action('template_redirect', function () use ($maintenanceMode) {
+    if (!$maintenanceMode || current_user_can('activate_plugins')) {
         return;
     }
 
@@ -24,3 +26,15 @@ add_action('template_redirect', function () {
         ));
     }
 }, -9);
+
+add_action('admin_bar_menu', function ($bar) use ($maintenanceMode) {
+    if (!$maintenanceMode) {
+        return;
+    }
+
+    $bar->add_node([
+        'id' => 'bpwp-maintenance-mode',
+        'title' => 'Maintenance Mode',
+        'href' => admin_url('plugins.php'),
+    ]);
+}, 95);
